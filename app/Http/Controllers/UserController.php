@@ -98,6 +98,16 @@ class UserController extends Controller
         return response()->json($data);
     }
 
+    public function LogoutUser()
+    {
+        auth()->user()->tokens()->delete();
+        $data = [
+            'Message' => 'Usuario deslogueado correctamente'
+        ];
+
+        return response()->json($data);
+    }
+
 
     public function Edit(Request $request, $id)
     {
@@ -161,5 +171,78 @@ class UserController extends Controller
 
         return response()->json($data);
 
+    }
+
+
+    public function editEmployee(Request $request,$id)
+    {
+        $empleado = User::find($id);
+
+        $validation = Validator::make($request->all(),[
+            'Nombre' => 'required|string|max:100',
+            'Edad' => 'required|integer',
+            'Email' => 'required|email',
+            'Documento' => 'required|max:12'
+        ]);
+
+        if($validation->fails())
+        {
+            return response()->json([
+                'Errors' => $validation->errors() 
+            ],422);
+        }
+
+        $usuarioEditar = User::where('email',$request->Email)->where('empleador_id',$empleado->empleador_id)
+        ->where('id' ,'!=',$empleado->id)->count();
+
+        if($usuarioEditar > 0)
+        {
+            return response()->json([
+                'Error' => 'Lo sentimos pero el correo que intenta actualizar ya se enecuentra registrado en el sistema'
+            ]);
+        }
+
+        if($request->Password != null)
+        {
+            if($request->Password != $empleado->password)
+            {
+                if($request->Password == $request->confirmPassword)
+                {
+                    $empleado->nombre = $request->Nombre;
+                    $empleado->documento = $request->Documento;
+                    $empleado->email = $request->Email;
+                    $empleado->edad = $request->Edad;
+                    $empleado->password = Hash::make($request->Password);
+                    $empleado->save();
+                }
+                else
+                {
+                    return response()->json([
+                        'Error' => 'Las contraseñas no coinciden'
+                    ]);
+                }
+            }
+            else
+            {
+                return response()->json([
+                    'Error' => 'La nueva contraseña es igual a la contraseña anteriorS'
+                ]);
+            }
+        }
+        else
+        {
+            $empleado->nombre = $request->Nombre;
+            $empleado->documento = $request->Documento;
+            $empleado->email = $request->Email;
+            $empleado->edad = $request->Edad;
+            $empleado->save();
+        }
+
+        $data = [
+            'Message' => 'Datos del empleado actualizados',
+            'Empleado' => $empleado
+        ];
+
+        return response()->json($data);
     }
 }
