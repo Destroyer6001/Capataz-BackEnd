@@ -10,7 +10,7 @@ use Illuminate\Validation\Rule;
 
 class CultivoController extends Controller
 {
- 
+
     public function show()
     {
         $user_Id = Auth()->id();
@@ -18,8 +18,6 @@ class CultivoController extends Controller
         return response()->json($cultivos);
     }
 
-
- 
     public function store(Request $request)
     {
         $user_Id = Auth()->id();
@@ -35,7 +33,7 @@ class CultivoController extends Controller
         }
 
         $existeCultivo = Cultivo::where('User_id',"=",$user_Id)->where('Nombre',"=",$request->Nombre)->count();
-        
+
         if($existeCultivo > 0)
         {
             return response()->json([
@@ -71,7 +69,7 @@ class CultivoController extends Controller
     {
         $cultivo = Cultivo::find($id);
         $user_Id = Auth()->id();
-        
+
         $validation = Validator::make($request->all(),[
             'Nombre' => 'required|string|min:4'
         ]);
@@ -84,12 +82,12 @@ class CultivoController extends Controller
         }
 
         $existeEditar = Cultivo::where('User_id',$cultivo->User_id)->where('Nombre',$request->Nombre)->where('id', '!=',$cultivo->id)->count();
-        
+
         if($existeEditar > 0)
         {
             return response()->json(
                 [
-                    'Error' => 'El Nombre que intenta actualizar ya esta registrado en el sistema' 
+                    'Error' => 'El Nombre que intenta actualizar ya esta registrado en el sistema'
                 ]
             ,422);
         }

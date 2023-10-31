@@ -10,7 +10,7 @@ use Illuminate\Validation\Rule;
 
 class LoteController extends Controller
 {
-   
+
     public function show()
     {
         $userId = Auth()->id();
@@ -75,7 +75,7 @@ class LoteController extends Controller
         $validation = Validator::make($request->all(),[
             'Nombre' => 'required|string|min:4',
             'Tamano' => 'required|integer'
-        ]); 
+        ]);
 
         if($validation->fails())
         {
@@ -83,7 +83,7 @@ class LoteController extends Controller
                 'Errors' => $validation->errors()
             ],422);
         }
-        
+
         $validarEditar = Lote::where('User_id',$lote->User_id)->where('Nombre',$request->Nombre)->where('id', '!=', $lote->id)->count();
 
         if($validarEditar > 0)
@@ -108,7 +108,7 @@ class LoteController extends Controller
         return response()->json($data);
     }
 
-    
+
     public function destroy($id)
     {
         $lote = Lote::find($id);
