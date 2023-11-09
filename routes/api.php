@@ -6,6 +6,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CultivoController;
 use App\Http\Controllers\LoteController;
 use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\ProductosController;
+use App\Http\Controllers\MovimientosController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -41,6 +43,13 @@ Route::middleware(['auth:sanctum','role.api:user'])->group(function(){
     Route::post('/empleados/store',[EmpleadoController::class,'store']);
     Route::put('/empleados/{id}',[EmpleadoController::class,'update']);
     Route::delete('/empleados/{id}',[EmpleadoController::class,'destroy']);
+    Route::get('/productos',[ProductosController::class,'show']);
+    Route::get('/productos/{id}',[ProductosController::class,'showById']);
+    Route::post('/productos/store',[ProductosController::class,'store']);
+    Route::put('/productos/{id}',[ProductosController::class,'update']);
+    Route::get('/movimientos/{id}',[MovimientosController::class,'showByProducto']);
+    Route::post('/movimientos/store',[MovimientosController::class,'store']);
+    Route::get('/productos/dissable/{id}',[ProductosController::class, 'dissable']);
 });
 
 Route::middleware(['auth:sanctum','role.api:empleado'])->group(function(){
