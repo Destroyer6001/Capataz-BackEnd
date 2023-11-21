@@ -8,6 +8,11 @@ use App\Http\Controllers\LoteController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\MovimientosController;
+use App\Http\Controllers\LaborController;
+use App\Http\Controllers\HerramientaController;
+use App\Http\Controllers\PrestamosController;
+use App\Http\Controllers\TareasController;
+use App\Http\Controllers\RecoleccionController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -49,13 +54,39 @@ Route::middleware(['auth:sanctum','role.api:user'])->group(function(){
     Route::put('/productos/{id}',[ProductosController::class,'update']);
     Route::get('/movimientos/{id}',[MovimientosController::class,'showByProducto']);
     Route::post('/movimientos/store',[MovimientosController::class,'store']);
-    Route::get('/productos/dissable/{id}',[ProductosController::class, 'dissable']);
+    Route::patch('/productos/dissable/{id}',[ProductosController::class, 'dissable']);
+    Route::get('/labores',[LaborController::class,'show']);
+    Route::get('/labores/{id}',[LaborController::class,'showById']);
+    Route::post('/labores/store',[LaborController::class,'store']);
+    Route::put('/labores/{id}',[LaborController::class,'update']);
+    Route::delete('/labores/{id}',[LaborController::class,'destroy']);
+    Route::get('/herramientas',[HerramientaController::class,'show']);
+    Route::get('/herramientas/{id}',[HerramientaController::class,'showById']);
+    Route::post('/herramientas/store',[HerramientaController::class,'store']);
+    Route::put('/herramientas/{id}',[HerramientaController::class,'update']);
+    Route::delete('/herramientas/{id}',[HerramientaController::class,'destroy']);
+    Route::get('/tareas',[TareasController::class,'show']);
+    Route::get('/tareas/{id}',[TareasController::class,'showById']);
+    Route::post('/tareas/store',[TareasController::class,'store']);
+    Route::put('/tareas/{id}',[TareasController::class,'update']);
+    Route::patch('/tareas/{id}',[TareasController::class,'CambioDeEstado']);
+    Route::get('/prestamos',[PrestamosController::class,'show']);
+    Route::get('/prestamos/{id}',[PrestamosController::class,'showById']);
+    Route::post('/prestamos/store',[PrestamosController::class,'store']);
+    Route::put('/prestamos/{id}',[PrestamosController::class,'update']);
+    Route::patch('/prestamos/{id}',[PrestamosController::class,'CambioDeEstado']);
+    Route::get('/recoleccion',[RecoleccionController::class,'show']);
+    Route::get('/recoleccion/{id}',[RecoleccionController::class,'showById']);
+    Route::post('/recoleccion/store',[RecoleccionController::class,'store']);
 });
 
 Route::middleware(['auth:sanctum','role.api:empleado'])->group(function(){
 
     Route::get('/users/logout',[UserController::class,'Logout']);
     Route::put('/empleado/edit/{id}',[UserController::class,'editEmployee']);
+    Route::get('/employee/gather',[RecoleccionController::class,'ShowByEmployee']);
+    Route::get('/employee/tasks',[TareasController::class,'ShowByEmployee']);
+    Route::get('/employee/loans',[PrestamosController::class,'ShowByEmployee']);
    
 });
 
