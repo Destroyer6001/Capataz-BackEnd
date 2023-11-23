@@ -64,7 +64,7 @@ Route::middleware(['auth:sanctum','role.api:user'])->group(function(){
     Route::get('/herramientas/{id}',[HerramientaController::class,'showById']);
     Route::post('/herramientas/store',[HerramientaController::class,'store']);
     Route::put('/herramientas/{id}',[HerramientaController::class,'update']);
-    Route::delete('/herramientas/{id}',[HerramientaController::class,'destroy']);
+    Route::patch('/herramientas/{id}',[HerramientaController::class,'CambiarEstadoDeLaHerramienta']);
     Route::get('/tareas',[TareasController::class,'show']);
     Route::get('/tareas/{id}',[TareasController::class,'showById']);
     Route::post('/tareas/store',[TareasController::class,'store']);
