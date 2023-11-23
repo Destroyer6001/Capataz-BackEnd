@@ -58,7 +58,7 @@ class HerramientaController extends Controller
             'Herramienta' => $herramienta
         ];
 
-        return response()->json($herramienta);
+        return response()->json($data);
     }
 
     
@@ -113,12 +113,13 @@ class HerramientaController extends Controller
     }
 
     
-    public function destroy($id)
+    public function CambiarEstadoDeLaHerramienta($id)
     {
         $herramienta = Herramienta::find($id);
-        $herramienta->delete();
+        $herramienta->Estado = "No Disponible";
+        $herramienta->save();
         $data = [
-            'Message' => 'Herramienta correctamente eliminada del sistema',
+            'Message' => 'el estado de la herramienta correctamente cambiado del sistema',
             'Herramienta' => $herramienta
         ];
         return response()->json($data);
